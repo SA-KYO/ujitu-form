@@ -25,33 +25,32 @@
   </script>
 
   <style>
-    /* iOS 入力時の自動ズーム防止 */
+    /* 共通: iOS の入力ズーム防止 & レイアウト安定化 */
+    *,*::before,*::after{ box-sizing: border-box }
     input, textarea, button, select { font-size:16px }
 
     /* ---- 余白と幅（Safe Area対応） ---- */
     :root{
-      /* 上は safe-area に +40px を加算してノッチを確実に回避 */
-      --padT: max(40px, calc(env(safe-area-inset-top) + 40px));
-      --padB: max(14px, env(safe-area-inset-bottom));
-      /* 左右の外側余白をさらに広めに */
-      --gap:  clamp(20px, 7vw, 32px);
+      /* 上: ノッチ回避 + 余白（さらに増量） */
+      --padT: max(56px, calc(env(safe-area-inset-top) + 56px));
+      --padB: max(16px, env(safe-area-inset-bottom));
+      /* 左右の外側余白（以前より広め） */
+      --gap:  clamp(22px, 7.5vw, 34px);
+      /* デスクトップ上限幅 */
+      --maxW: 920px;
     }
+
     html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
 
-    /* ビューポート基準で水平中央。親の max-width の影響を受けない */
+    /* 中央寄せ用の共通コンテナ
+       → transform を使わず margin: auto でセンター固定 */
     .edge{
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100dvw - 2*var(--gap));
-      max-width: none !important;
+      width: min(var(--maxW), calc(100dvw - 2*var(--gap)));
+      margin-left: auto;
+      margin-right: auto;
     }
     @supports not (width: 100dvw){
-      .edge{ width: calc(100vw - 2*var(--gap)); }
-    }
-    /* デスクトップ超広幅のみ固定幅 */
-    @media (min-width:1280px){
-      .edge{ width: 920px; }
+      .edge{ width: min(var(--maxW), calc(100vw - 2*var(--gap))); }
     }
   </style>
 </head>
@@ -59,7 +58,7 @@
 <body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed
              pt-[var(--padT)] pb-[var(--padB)]">
 
-  <!-- ヘッダー（.edge でカードと同幅に揃える） -->
+  <!-- ヘッダー（カードと同じ .edge 幅で完全センター） -->
   <header class="edge text-center mb-3">
     <h1 class="bg-gradient-to-r from-blue-500 to-brandPurple-500 bg-clip-text text-transparent
                text-[26px] font-extrabold tracking-[.2px]">
@@ -70,9 +69,9 @@
     </p>
   </header>
 
-  <!-- フォームカード -->
-  <main class="flex justify-center">
-    <div class="edge rounded-xl p-[1px]
+  <!-- フォームカード（.edge で左右対称＆中央） -->
+  <main class="edge">
+    <div class="rounded-xl p-[1px]
                 bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60
                 shadow-[0_8px_22px_rgba(2,6,23,.14)]">
       <section class="w-full rounded-[12px] bg-white ring-1 ring-black/10">
@@ -159,15 +158,15 @@
             をご確認ください。
           </p>
 
-          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10c</p>
+          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10d</p>
         </div>
       </section>
     </div>
   </main>
 
   <script>
-    /* GitHub Pages 版なら SCRIPT_URL をGASの/execに差し替えて使用
-       GAS HTMLサービス内なら下の fetch 部分を google.script.run に置換でOK */
+    /* GitHub Pages で使う場合は SCRIPT_URL を /exec に差し替え
+       GAS HTML サービス内なら google.script.run に置き換えてOK */
     const SCRIPT_URL = 'https://script.google.com/macros/s/【あなたのWebアプリURL】/exec';
 
     (function(){
@@ -196,7 +195,6 @@
         if (!data.name || !data.email || !data.message){ msgNg.textContent='必須項目が未入力です。'; show(msgNg); return; }
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){ msgNg.textContent='メールアドレスの形式が正しくありません。'; show(msgNg); return; }
 
-        // GitHub Pages 運用時は fetch、GAS HTML運用時は google.script.run に置換
         try{
           busy(true);
           const res = await fetch(SCRIPT_URL, {
