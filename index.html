@@ -30,11 +30,11 @@
 
     /* ---- 余白と幅（Safe Area対応） ---- */
     :root{
-      /* 上は safe-area に +α を加算してノッチを完全に回避 */
-      --padT: max(24px, calc(env(safe-area-inset-top) + 22px));
-      --padB: max(12px, env(safe-area-inset-bottom));
-      /* 左右の外側余白をやや広めに */
-      --gap:  clamp(18px, 6.5vw, 28px);
+      /* 上は safe-area に +40px を加算してノッチを確実に回避 */
+      --padT: max(40px, calc(env(safe-area-inset-top) + 40px));
+      --padB: max(14px, env(safe-area-inset-bottom));
+      /* 左右の外側余白をさらに広めに */
+      --gap:  clamp(20px, 7vw, 32px);
     }
     html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
 
@@ -59,18 +59,18 @@
 <body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed
              pt-[var(--padT)] pb-[var(--padB)]">
 
-  <!-- タイトル＆説明（ノッチに隠れない） -->
-  <header class="text-center mb-2">
+  <!-- ヘッダー（.edge でカードと同幅に揃える） -->
+  <header class="edge text-center mb-3">
     <h1 class="bg-gradient-to-r from-blue-500 to-brandPurple-500 bg-clip-text text-transparent
-               text-[24px] font-extrabold tracking-[.2px]">
+               text-[26px] font-extrabold tracking-[.2px]">
       お問い合わせ
     </h1>
-    <p class="mt-1 text-[14px] text-gray-700/90">
+    <p class="mt-1 text-[15px] text-gray-700/90">
       ご質問・お見積り・ご相談など、お気軽にお送りください。
     </p>
   </header>
 
-  <!-- フォームカード：左右に余白、縦位置はヘッダーの直下 -->
+  <!-- フォームカード -->
   <main class="flex justify-center">
     <div class="edge rounded-xl p-[1px]
                 bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60
@@ -159,14 +159,15 @@
             をご確認ください。
           </p>
 
-          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10b</p>
+          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10c</p>
         </div>
       </section>
     </div>
   </main>
 
   <script>
-    // GitHub Pages 版なら fetch で GAS Webアプリへ送信（SCRIPT_URL を差し替え）
+    /* GitHub Pages 版なら SCRIPT_URL をGASの/execに差し替えて使用
+       GAS HTMLサービス内なら下の fetch 部分を google.script.run に置換でOK */
     const SCRIPT_URL = 'https://script.google.com/macros/s/【あなたのWebアプリURL】/exec';
 
     (function(){
@@ -195,11 +196,11 @@
         if (!data.name || !data.email || !data.message){ msgNg.textContent='必須項目が未入力です。'; show(msgNg); return; }
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){ msgNg.textContent='メールアドレスの形式が正しくありません。'; show(msgNg); return; }
 
-        busy(true);
+        // GitHub Pages 運用時は fetch、GAS HTML運用時は google.script.run に置換
         try{
+          busy(true);
           const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'cors',
+            method: 'POST', mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
           });
