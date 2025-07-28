@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>お問い合わせ</title>
 
-  <!-- Tailwind CSS（開発用） -->
+  <!-- Tailwind CDN（開発用。必要なら後述のビルド運用へ） -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -25,19 +25,13 @@
   </script>
 
   <style>
-    /* iOSズーム防止 */
     input, textarea, button, select { font-size:16px }
-
-    /* 可変余白（Safe Area対応） */
     :root{
       --padT: max(12px, env(safe-area-inset-top));
       --padB: max(12px, env(safe-area-inset-bottom));
-      --gap:  clamp(14px, 5vw, 24px);  /* 左右の外側余白 */
+      --gap:  clamp(14px, 5vw, 24px);
     }
-
     html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
-
-    /* 親の max-width を無視し、ビューポート基準で水平センター */
     .edge{
       position: relative;
       left: 50%;
@@ -48,8 +42,6 @@
     @supports not (width: 100dvw){
       .edge{ width: calc(100vw - 2*var(--gap)); }
     }
-
-    /* 超広デスクトップのみ固定幅中央寄せ（任意調整可） */
     @media (min-width:1280px){
       .edge{ width: 920px; }
     }
@@ -58,30 +50,24 @@
 
 <body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed">
 
-  <!-- 縦中央レイアウト：上下に少し余白 -->
   <div class="min-h-[calc(100dvh-var(--padT)-var(--padB))] flex items-center pt-[var(--padT)] pb-[var(--padB)]">
-
-    <!-- カード（中央／左右に可変余白） -->
     <div class="edge rounded-xl p-[1px]
                 bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60
                 shadow-[0_8px_22px_rgba(2,6,23,.14)]">
       <section class="w-full rounded-[12px] bg-white ring-1 ring-black/10">
-        <!-- 見出しバー -->
         <div class="bg-brandPurple-600 text-white px-4 py-3 rounded-t-[12px]">
           <h2 class="text-[18px] font-bold text-center">お問い合わせフォーム</h2>
         </div>
 
-        <!-- ★説明文をカード内へ（ノッチに隠れない） -->
+        <!-- カード内の説明文（ノッチに隠れない） -->
         <div class="px-4 pt-3">
           <p class="text-center text-[14px] text-gray-700/90">
             ご質問・お見積り・ご相談など、お気軽にお送りください。
           </p>
         </div>
 
-        <!-- フォーム本体 -->
         <div class="p-4 sm:p-6">
           <form id="contactForm" class="space-y-4" novalidate>
-            <!-- お名前 -->
             <div>
               <label for="name" class="block text-[16px] font-semibold text-gray-800">
                 お名前 <span class="text-gray-500 text-[13px]">(必須)</span>
@@ -91,7 +77,6 @@
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
 
-            <!-- メール -->
             <div>
               <label for="email" class="block text-[16px] font-semibold text-gray-800">
                 メールアドレス <span class="text-gray-500 text-[13px]">(必須)</span>
@@ -101,7 +86,6 @@
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
 
-            <!-- 件名 -->
             <div>
               <label for="subject" class="block text-[16px] font-semibold text-gray-800">
                 件名 <span class="text-gray-500 text-[13px]">(任意)</span>
@@ -111,7 +95,6 @@
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
 
-            <!-- 本文 -->
             <div>
               <label for="message" class="block text-[16px] font-semibold text-gray-800">
                 お問い合わせ内容 <span class="text-gray-500 text-[13px]">(必須)</span>
@@ -122,10 +105,9 @@
                                resize-y min-h-[180px]"></textarea>
             </div>
 
-            <!-- 蜜壺（スパム対策） -->
+            <!-- 蜜壺（ボット対策） -->
             <input type="text" id="website" name="website" class="hidden" tabindex="-1" autocomplete="off"/>
 
-            <!-- ボタン -->
             <div class="space-y-2">
               <button id="submitBtn" type="submit"
                       class="w-full select-none rounded-lg bg-gradient-to-r from-blue-500 to-brandPurple-500
@@ -161,53 +143,65 @@
             をご確認ください。
           </p>
 
-          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10a</p>
+          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: gh-pages</p>
         </div>
       </section>
     </div>
   </div>
 
   <script>
-    /* デバッグ（幅確認） */
-    (function(){
-      const v = document.getElementById('ver');
-      function show(){
-        const iw = window.innerWidth;
-        const vw = Math.round((window.visualViewport && window.visualViewport.width) || 0);
-        const ew = Math.round(document.querySelector('.edge')?.getBoundingClientRect().width || 0);
-        v.textContent = `ver: tw10a | innerWidth:${iw}px visualViewport:${vw||'-'}px | card:${ew}px`;
-      }
-      show(); addEventListener('resize', show);
-    })();
+    // ★Apps Script WebアプリURLに差し替え
+    const SCRIPT_URL = 'https://script.google.com/macros/s/【あなたのデプロイURL】/exec';
 
-    /* 送信処理（Apps Script の submitForm を呼ぶ） */
     (function(){
-      const form=document.getElementById('contactForm');
-      const btn=document.getElementById('submitBtn');
-      const loader=document.getElementById('loader');
-      const msgOk=document.getElementById('msgOk');
-      const msgNg=document.getElementById('msgNg');
-      const status=document.getElementById('status');
-      const show=e=>e.classList.remove('hidden'), hide=e=>e.classList.add('hidden');
-      const busy=b=>{ btn.disabled=b; if(b){show(loader); status.textContent='送信中…'}else{hide(loader); status.textContent=''} };
+      const form   = document.getElementById('contactForm');
+      const btn    = document.getElementById('submitBtn');
+      const loader = document.getElementById('loader');
+      const msgOk  = document.getElementById('msgOk');
+      const msgNg  = document.getElementById('msgNg');
+      const status = document.getElementById('status');
 
-      form.addEventListener('submit',function(e){
+      const show = el => el.classList.remove('hidden');
+      const hide = el => el.classList.add('hidden');
+      const busy = b => { btn.disabled = b; if(b){show(loader); status.textContent='送信中…'}else{hide(loader); status.textContent=''} };
+
+      form.addEventListener('submit', async (e) => {
         e.preventDefault(); hide(msgOk); hide(msgNg);
-        if (document.getElementById('website').value.trim()!=='') return; // 蜜壺
-        const data={
-          name:document.getElementById('name').value.trim(),
-          email:document.getElementById('email').value.trim(),
-          subject:document.getElementById('subject').value.trim(),
-          message:document.getElementById('message').value.trim(),
-          pageUrl:location.href, userAgent:navigator.userAgent
+
+        if (document.getElementById('website').value.trim() !== '') return; // 蜜壺
+
+        const data = {
+          name:    document.getElementById('name').value.trim(),
+          email:   document.getElementById('email').value.trim(),
+          subject: document.getElementById('subject').value.trim(),
+          message: document.getElementById('message').value.trim(),
+          pageUrl: location.href,
+          userAgent: navigator.userAgent
         };
-        if(!data.name||!data.email||!data.message){ msgNg.textContent='必須項目が未入力です。'; show(msgNg); return; }
-        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){ msgNg.textContent='メールアドレスの形式が正しくありません。'; show(msgNg); return; }
+
+        if (!data.name || !data.email || !data.message){
+          msgNg.textContent = '必須項目が未入力です。'; show(msgNg); return;
+        }
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){
+          msgNg.textContent = 'メールアドレスの形式が正しくありません。'; show(msgNg); return;
+        }
+
         busy(true);
-        google.script.run
-          .withSuccessHandler(res=>{ busy(false); if(res&&res.ok){ form.reset(); show(msgOk);} else { show(msgNg);} })
-          .withFailureHandler(err=>{ console.error(err); busy(false); show(msgNg); })
-          .submitForm(data);
+        try{
+          const res = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const json = await res.json().catch(()=>({ok:false}));
+          busy(false);
+          if (json && json.ok){ form.reset(); show(msgOk); }
+          else { show(msgNg); }
+        }catch(err){
+          console.error(err);
+          busy(false); show(msgNg);
+        }
       });
     })();
   </script>
