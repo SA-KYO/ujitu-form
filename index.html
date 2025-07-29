@@ -25,25 +25,20 @@
   </script>
 
   <style>
-    /* 共通: iOS の入力ズーム防止 & レイアウト安定化 */
+    /* レイアウト安定化 & iOS の自動ズーム防止 */
     *,*::before,*::after{ box-sizing: border-box }
     input, textarea, button, select { font-size:16px }
 
-    /* ---- 余白と幅（Safe Area対応） ---- */
+    /* ---- Safe Area / 余白・幅 ---- */
     :root{
-      /* 上: ノッチ回避 + 余白（さらに増量） */
-      --padT: max(56px, calc(env(safe-area-inset-top) + 56px));
+      --padT: max(56px, calc(env(safe-area-inset-top) + 56px)); /* ノッチ回避 + 余白 */
       --padB: max(16px, env(safe-area-inset-bottom));
-      /* 左右の外側余白（以前より広め） */
-      --gap:  clamp(22px, 7.5vw, 34px);
-      /* デスクトップ上限幅 */
-      --maxW: 920px;
+      --gap:  clamp(22px, 7.5vw, 34px);                        /* 左右外側余白 */
+      --maxW: 920px;                                           /* PC上限幅 */
     }
-
     html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
 
-    /* 中央寄せ用の共通コンテナ
-       → transform を使わず margin: auto でセンター固定 */
+    /* 中央揃え（transform を使わず margin:auto） */
     .edge{
       width: min(var(--maxW), calc(100dvw - 2*var(--gap)));
       margin-left: auto;
@@ -58,7 +53,7 @@
 <body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed
              pt-[var(--padT)] pb-[var(--padB)]">
 
-  <!-- ヘッダー（カードと同じ .edge 幅で完全センター） -->
+  <!-- ヘッダー（カードと同幅で完全センター） -->
   <header class="edge text-center mb-3">
     <h1 class="bg-gradient-to-r from-blue-500 to-brandPurple-500 bg-clip-text text-transparent
                text-[26px] font-extrabold tracking-[.2px]">
@@ -69,7 +64,7 @@
     </p>
   </header>
 
-  <!-- フォームカード（.edge で左右対称＆中央） -->
+  <!-- フォームカード -->
   <main class="edge">
     <div class="rounded-xl p-[1px]
                 bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60
@@ -86,19 +81,21 @@
               <label for="name" class="block text-[16px] font-semibold text-gray-800">
                 お名前 <span class="text-gray-500 text-[13px]">(必須)</span>
               </label>
-              <input id="name" name="name" required autocomplete="name"
+              <input id="name" name="name" autocomplete="name" required
                      class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
+
             <!-- メール -->
             <div>
               <label for="email" class="block text-[16px] font-semibold text-gray-800">
                 メールアドレス <span class="text-gray-500 text-[13px]">(必須)</span>
               </label>
-              <input id="email" name="email" type="email" required autocomplete="email" inputmode="email"
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required
                      class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
+
             <!-- 件名 -->
             <div>
               <label for="subject" class="block text-[16px] font-semibold text-gray-800">
@@ -108,6 +105,7 @@
                      class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
+
             <!-- 本文 -->
             <div>
               <label for="message" class="block text-[16px] font-semibold text-gray-800">
@@ -158,16 +156,27 @@
             をご確認ください。
           </p>
 
-          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10d</p>
+          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10e</p>
         </div>
       </section>
     </div>
   </main>
 
   <script>
-    /* GitHub Pages で使う場合は SCRIPT_URL を /exec に差し替え
-       GAS HTML サービス内なら google.script.run に置き換えてOK */
+    /* ★ここをあなたの GAS Webアプリ（/exec）URLに置き換え */
     const SCRIPT_URL = 'https://script.google.com/macros/s/【あなたのWebアプリURL】/exec';
+
+    // GASへ送信（プリフライトを避ける：no-cors + text/plain）
+    async function postToGAS(payload){
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify(payload)
+      });
+      // opaque 応答のため結果は読めないが、例外が出なければ成功扱い
+      return { ok: true };
+    }
 
     (function(){
       const form   = document.getElementById('contactForm');
@@ -197,14 +206,9 @@
 
         try{
           busy(true);
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST', mode: 'cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-          const json = await res.json().catch(()=>({ok:false}));
+          const res = await postToGAS(data);
           busy(false);
-          if (json && json.ok){ form.reset(); show(msgOk); } else { show(msgNg); }
+          if (res.ok){ form.reset(); show(msgOk); } else { show(msgNg); }
         }catch(err){
           console.error(err); busy(false); show(msgNg);
         }
