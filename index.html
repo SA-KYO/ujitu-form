@@ -1,207 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>プライバシーポリシー | 宇治田原つーしん（LINE）</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="theme-color" content="#6d28d9">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>お問い合わせ</title>
+
+  <!-- Tailwind CDN（開発用） -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandPurple: {50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',800:'#5b21b6',900:'#4c1d95'}
+          },
+          fontFamily: { body: ['"Noto Sans JP"','ui-sans-serif','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
   <style>
+    *,*::before,*::after{ box-sizing: border-box }
+    /* iOS の自動ズーム防止 */
+    input, textarea, button, select { font-size: 16px }
+
+    /* Safe Area / 余白・幅 */
     :root{
-      --fg:#111827;          /* text-gray-900 */
-      --fg-2:#374151;        /* text-gray-700 */
-      --fg-3:#6b7280;        /* text-gray-500 */
-      --bg:#f9fafb;          /* gray-50 */
-      --card:#ffffff;        /* white */
-      --em:#6d28d9;          /* brand purple 700 */
-      --em-2:#8b5cf6;        /* brand purple 500 */
-      --ring:rgba(17,24,39,.08);
-      --radius:14px;
-      --padL: max(12px, env(safe-area-inset-left));
-      --padR: max(12px, env(safe-area-inset-right));
-      --padT: max(12px, env(safe-area-inset-top));
-      --padB: max(16px, env(safe-area-inset-bottom));
-      --maxw: 880px;
+      --padT: max(72px, calc(env(safe-area-inset-top) + 64px)); /* ノッチ回避+余白 */
+      --padB: max(20px, env(safe-area-inset-bottom));
+      --gap:  clamp(22px, 7.5vw, 34px);                        /* 左右外側余白 */
+      --maxW: 920px;                                           /* PC上限幅 */
     }
-    html,body{height:100%}
-    body{
-      margin:0;
-      color:var(--fg);
-      background:linear-gradient(180deg,#eef2ff, #f6f5ff 30%, var(--bg));
-      font: 16px/1.75 system-ui, -apple-system, "Segoe UI", "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      -webkit-text-size-adjust:100%;
-    }
-    .wrap{
-      min-height:100%;
-      padding: calc(var(--padT) + 18px) var(--padL) var(--padB);
-      display:flex; align-items:flex-start; justify-content:center;
-    }
-    .container{
-      width: min(100%, var(--maxw));
-    }
-
-    /* Hero */
-    .hero{
-      text-align:center;
-      margin: 6px auto 16px;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:.5rem;
-      font-size:12px; color:#fff; background:var(--em);
-      border-radius:999px; padding:.35rem .7rem;
-      box-shadow:0 6px 18px rgba(109,40,217,.25);
-    }
-    .title{
-      margin:.75rem 0 .25rem;
-      font-size:clamp(22px, 5.2vw, 30px);
-      line-height:1.25; letter-spacing:.3px;
-      background:linear-gradient(90deg,var(--em),var(--em-2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      font-weight:800;
-    }
-    .lead{ color:var(--fg-2); font-size:14px }
-
-    /* Card */
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:0 10px 28px rgba(2,6,23,.10);
-      border:1px solid var(--ring);
-      overflow:hidden;
-    }
-    .card-head{
-      background:linear-gradient(90deg,var(--em),var(--em-2));
-      color:#fff; padding:14px 18px; font-weight:700; letter-spacing:.2px;
-      text-align:center;
-    }
-    .card-body{ padding:18px }
-    @media (min-width: 640px){ .card-body{ padding:28px } }
-
-    /* Section */
-    section + section{ margin-top:28px }
-    h2{
-      font-size: clamp(18px, 4.6vw, 22px);
-      line-height:1.4; margin: 4px 0 8px;
-      color:var(--fg); font-weight:800;
-    }
-    h3{
-      font-size: clamp(16px, 4.4vw, 18px);
-      margin:18px 0 6px; color:var(--fg-2); font-weight:700;
-    }
-    p{ margin:.6em 0 }
-    ul,ol{ padding-left:1.2em; margin:.4em 0 }
-    small, .muted{ color:var(--fg-3) }
-
-    /* Footer note */
-    .note{
-      margin-top:24px; padding:14px 16px; border-radius:12px;
-      background:#f8fafc; border:1px dashed rgba(15,23,42,.15); color:var(--fg-2);
-    }
-
-    /* Link */
-    a{ color:#1d4ed8; text-decoration-thickness: .08em; text-underline-offset: .18em }
-
-    /* Print */
-    @media print{
-      .wrap{ padding:0 }
-      .hero{ margin:0 0 8px }
-      .card{ box-shadow:none; border:1px solid #ddd }
+    html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
+    .edge{ width:min(var(--maxW), calc(100dvw - 2*var(--gap))); margin-left:auto; margin-right:auto; }
+    @supports not (width: 100dvw){
+      .edge{ width:min(var(--maxW), calc(100vw - 2*var(--gap))); }
     }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <main class="container">
-      <header class="hero" aria-label="ページ見出し">
-        <span class="badge" aria-hidden="true">Privacy Policy</span>
-        <h1 class="title">プライバシーポリシー</h1>
-        <p class="lead">本ページは「宇治田原つーしん（LINE）」における個人情報等の取扱いについて定めるものです。</p>
-      </header>
 
-      <article class="card" role="article">
-        <div class="card-head">宇治田原つーしん（LINE） プライバシーポリシー</div>
-        <div class="card-body">
+<body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed
+             pt-[var(--padT)] pb-[var(--padB)]">
 
-          <p class="muted">最終更新日：<time datetime="2025-08-01">2025年8月1日</time></p>
+  <!-- ヘッダー（中央） -->
+  <header class="edge text-center mb-3">
+    <h1 class="bg-gradient-to-r from-blue-500 to-brandPurple-500 bg-clip-text text-transparent
+               text-[26px] font-extrabold tracking-[.2px]">
+      お問い合わせ
+    </h1>
+    <p class="mt-1 text-[15px] text-gray-700/90">ご質問・お見積り・ご相談など、お気軽にお送りください。</p>
+  </header>
 
-          <section id="scope">
-            <h2>1. 適用範囲</h2>
-            <p>本ポリシーは、宇治田原つーしん（以下「当サービス」）の LINE 公式アカウントおよび関連するお問い合わせフォーム等において取得する情報の取扱いに適用されます。</p>
-          </section>
-
-          <section id="data">
-            <h2>2. 取得する情報</h2>
-            <h3>ユーザーから直接ご提供いただく情報</h3>
-            <ul>
-              <li>氏名・ニックネーム</li>
-              <li>メールアドレス</li>
-              <li>お問い合わせ内容、添付情報</li>
-            </ul>
-            <h3>端末・利用状況に関する情報（自動取得）</h3>
-            <ul>
-              <li>アクセス日時、リファラ、ページURL、ユーザーエージェント</li>
-              <li>クッキー等の識別子（必要最小限）</li>
-            </ul>
-          </section>
-
-          <section id="purpose">
-            <h2>3. 利用目的</h2>
-            <ol>
-              <li>お問い合わせへの回答および連絡</li>
-              <li>運営上の必要なお知らせの配信</li>
-              <li>サービス改善・品質向上のための分析（統計化・匿名化を含む）</li>
-              <li>法令・規約違反等への対応</li>
-            </ol>
-          </section>
-
-          <section id="thirdparty">
-            <h2>4. 第三者提供・委託</h2>
-            <p>法令に基づく場合を除き、本人の同意なく個人情報を第三者へ提供しません。運営・保守・分析等を外部に委託する場合は、適切な委託先管理（守秘義務・再委託制限等）を実施します。</p>
-          </section>
-
-          <section id="security">
-            <h2>5. 安全管理</h2>
-            <p>アクセス制御、通信の暗号化、ログ管理等、合理的な安全管理措置を講じます。事故発生時は影響範囲の把握・原因究明・再発防止に取り組みます。</p>
-          </section>
-
-          <section id="rights">
-            <h2>6. 開示・訂正・利用停止等の請求</h2>
-            <p>保有個人データの開示、内容の訂正・追加・削除、利用停止・消去・第三者提供の停止等のご請求に対応します。<a href="#contact">お問い合わせ先</a>までご連絡ください。ご本人確認をお願いする場合があります。</p>
-          </section>
-
-          <section id="cookie">
-            <h2>7. クッキー等・外部送信</h2>
-            <p>利便性向上や不正防止、統計的な利用状況把握のため、必要最小限のクッキー等の技術を用いる場合があります。ブラウザの設定により無効化できますが、一部機能に制約が生じることがあります。</p>
-          </section>
-
-          <section id="retention">
-            <h2>8. 保存期間</h2>
-            <p>取得目的の達成に必要な期間、または法令で定められた期間保存し、不要となった情報は安全な方法で削除します。</p>
-          </section>
-
-          <section id="contact">
-            <h2>9. お問い合わせ窓口</h2>
-            <p>本ポリシーおよび個人情報の取扱いに関するご質問は、以下までご連絡ください。</p>
-            <ul>
-              <li>運営：宇治田原つーしん</li>
-              <li>LINE：宇治田原つーしん 公式アカウント（アプリ内からメッセージ送信）</li>
-            </ul>
-          </section>
-
-          <section id="changes">
-            <h2>10. 改定</h2>
-            <p>法令・運用の変更等に応じて本ポリシーを改定することがあります。重要な変更は当サービス上でお知らせします。</p>
-          </section>
-
-          <section id="effective">
-            <h2>11. 施行日</h2>
-            <p><time datetime="2025-07-30">2025年8月1日</time></p>
-          </section>
-
-          <p class="note">※ 本ポリシーは、個人情報の保護に関する法律（APPI）等の趣旨を踏まえ作成しています。表現の明確化やレイアウトの最適化を目的とする軽微な表現調整を行う場合があります。</p>
+  <!-- フォームカード（中央寄せ） -->
+  <main class="edge">
+    <div class="rounded-xl p-[1px] bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60 shadow-[0_8px_22px_rgba(2,6,23,.14)]">
+      <section class="w-full rounded-[12px] bg-white ring-1 ring-black/10">
+        <div class="bg-brandPurple-600 text-white px-4 py-3 rounded-t-[12px]">
+          <h2 class="text-[18px] font-bold text-center">お問い合わせフォーム</h2>
         </div>
-      </article>
-    </main>
-  </div>
+
+        <div class="p-4 sm:p-6">
+          <form id="contactForm" class="space-y-4" novalidate>
+            <div>
+              <label for="name" class="block text-[16px] font-semibold text-gray-800">
+                お名前 <span class="text-gray-500 text-[13px]">(必須)</span>
+              </label>
+              <input id="name" name="name" autocomplete="name" required
+                     class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
+                            focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
+            </div>
+
+            <div>
+              <label for="email" class="block text-[16px] font-semibold text-gray-800">
+                メールアドレス <span class="text-gray-500 text-[13px]">(必須)</span>
+              </label>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required
+                     class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
+                            focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
+            </div>
+
+            <div>
+              <label for="subject" class="block text-[16px] font-semibold text-gray-800">
+                件名 <span class="text-gray-500 text-[13px]">(任意)</span>
+              </label>
+              <input id="subject" name="subject" autocomplete="off"
+                     class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
+                            focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
+            </div>
+
+            <div>
+              <label for="message" class="block text-[16px] font-semibold text-gray-800">
+                お問い合わせ内容 <span class="text-gray-500 text-[13px]">(必須)</span>
+              </label>
+              <textarea id="message" name="message" required rows="7"
+                        class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-[17px]
+                               focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500
+                               resize-y min-h-[180px]"></textarea>
+            </div>
+
+            <!-- 蜜壺（ボット対策） -->
+            <input type="text" id="website" name="website" class="hidden" tabindex="-1" autocomplete="off"/>
+
+            <div class="space-y-2">
+              <button id="submitBtn" type="submit"
+                      class="w-full select-none rounded-lg bg-gradient-to-r from-blue-500 to-brandPurple-500
+                             px-4 py-3.5 text-[17px] font-extrabold text-white shadow-md
+                             transition active:scale-[.98] disabled:opacity-60">
+                <span class="inline-flex items-center justify-center gap-2">
+                  <span>送信する</span>
+                  <span id="loader" class="hidden">
+                    <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                  </span>
+                </span>
+              </button>
+              <button type="reset"
+                      class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3.5 text-[17px] font-semibold text-gray-900">
+                クリア
+              </button>
+              <p id="status" class="min-h-[1.2em] text-[14px] text-gray-600"></p>
+            </div>
+          </form>
+
+          <!-- トースト -->
+          <div id="msgOk" class="mt-3 hidden rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-[15px] text-green-700">
+            送信が完了しました。ありがとうございました。
+          </div>
+          <div id="msgNg" class="mt-3 hidden rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[15px] text-red-700">
+            送信に失敗しました。時間をおいて再度お試しください。
+          </div>
+
+          <p class="mt-3 text-[14px] text-gray-700">
+            ※個人情報の取り扱いは
+            <a href="https://YOUR-POLICY-URL.example/exec" target="_blank" rel="noopener"
+               class="border-b border-dashed border-current text-gray-900">プライバシーポリシー</a>
+            をご確認ください。
+          </p>
+
+          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: final</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    /* ★ここをあなたの GAS Webアプリ（/exec）URL に置き換え */
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzIQpgaAvaYPyrYWixzI8ne6DnQX70J7EKhPQFfr7y2d04dilP57N8QecgQDjp5WayW/exec';
+
+    // GASへ送信（プリフライト回避：no-cors + text/plain）
+    async function postToGAS(payload){
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify(payload)
+      });
+      // opaque 応答のため結果は読めないが、例外が出なければ成功扱い
+      return { ok: true };
+    }
+
+    (function(){
+      const form   = document.getElementById('contactForm');
+      const btn    = document.getElementById('submitBtn');
+      const loader = document.getElementById('loader');
+      const msgOk  = document.getElementById('msgOk');
+      const msgNg  = document.getElementById('msgNg');
+      const status = document.getElementById('status');
+      const show = el => el.classList.remove('hidden');
+      const hide = el => el.classList.add('hidden');
+      const busy = b => { btn.disabled = b; if(b){show(loader); status.textContent='送信中…'}else{hide(loader); status.textContent=''} };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault(); hide(msgOk); hide(msgNg);
+
+        // 蜜壺（ボット対策）
+        if (document.getElementById('website').value.trim() !== '') return;
+
+        const data = {
+          name:    document.getElementById('name').value.trim(),
+          email:   document.getElementById('email').value.trim(),
+          subject: document.getElementById('subject').value.trim(),
+          message: document.getElementById('message').value.trim(),
+          pageUrl: location.href,
+          userAgent: navigator.userAgent,
+          website: '' // サーバ側ハニーポット用フィールド
+        };
+
+        if (!data.name || !data.email || !data.message){
+          msgNg.textContent = '必須項目が未入力です。'; show(msgNg); return;
+        }
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){
+          msgNg.textContent = 'メールアドレスの形式が正しくありません。'; show(msgNg); return;
+        }
+
+        try{
+          busy(true);
+          const res = await postToGAS(data);
+          busy(false);
+          if (res.ok){ form.reset(); show(msgOk); } else { show(msgNg); }
+        }catch(err){
+          console.error(err); busy(false); show(msgNg);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
