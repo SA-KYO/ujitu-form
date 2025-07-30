@@ -12,40 +12,29 @@
       theme: {
         extend: {
           colors: {
-            brandPurple: {
-              50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',
-              400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',
-              800:'#5b21b6',900:'#4c1d95'
-            }
+            brandPurple: {50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',800:'#5b21b6',900:'#4c1d95'}
           },
           fontFamily: { body: ['"Noto Sans JP"','ui-sans-serif','system-ui','sans-serif'] }
         }
       }
     }
   </script>
-
   <style>
-    /* レイアウト安定化 & iOS の自動ズーム防止 */
     *,*::before,*::after{ box-sizing: border-box }
-    input, textarea, button, select { font-size:16px }
+    /* iOS の自動ズーム防止 */
+    input, textarea, button, select { font-size: 16px }
 
-    /* ---- Safe Area / 余白・幅 ---- */
+    /* Safe Area / 余白・幅 */
     :root{
-      --padT: max(56px, calc(env(safe-area-inset-top) + 56px)); /* ノッチ回避 + 余白 */
-      --padB: max(16px, env(safe-area-inset-bottom));
+      --padT: max(72px, calc(env(safe-area-inset-top) + 64px)); /* ノッチ回避+余白 */
+      --padB: max(20px, env(safe-area-inset-bottom));
       --gap:  clamp(22px, 7.5vw, 34px);                        /* 左右外側余白 */
       --maxW: 920px;                                           /* PC上限幅 */
     }
     html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
-
-    /* 中央揃え（transform を使わず margin:auto） */
-    .edge{
-      width: min(var(--maxW), calc(100dvw - 2*var(--gap)));
-      margin-left: auto;
-      margin-right: auto;
-    }
+    .edge{ width:min(var(--maxW), calc(100dvw - 2*var(--gap))); margin-left:auto; margin-right:auto; }
     @supports not (width: 100dvw){
-      .edge{ width: min(var(--maxW), calc(100vw - 2*var(--gap))); }
+      .edge{ width:min(var(--maxW), calc(100vw - 2*var(--gap))); }
     }
   </style>
 </head>
@@ -53,22 +42,18 @@
 <body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed
              pt-[var(--padT)] pb-[var(--padB)]">
 
-  <!-- ヘッダー（カードと同幅で完全センター） -->
+  <!-- ヘッダー（中央） -->
   <header class="edge text-center mb-3">
     <h1 class="bg-gradient-to-r from-blue-500 to-brandPurple-500 bg-clip-text text-transparent
                text-[26px] font-extrabold tracking-[.2px]">
       お問い合わせ
     </h1>
-    <p class="mt-1 text-[15px] text-gray-700/90">
-      ご質問・お見積り・ご相談など、お気軽にお送りください。
-    </p>
+    <p class="mt-1 text-[15px] text-gray-700/90">ご質問・お見積り・ご相談など、お気軽にお送りください。</p>
   </header>
 
-  <!-- フォームカード -->
+  <!-- フォームカード（中央寄せ） -->
   <main class="edge">
-    <div class="rounded-xl p-[1px]
-                bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60
-                shadow-[0_8px_22px_rgba(2,6,23,.14)]">
+    <div class="rounded-xl p-[1px] bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60 shadow-[0_8px_22px_rgba(2,6,23,.14)]">
       <section class="w-full rounded-[12px] bg-white ring-1 ring-black/10">
         <div class="bg-brandPurple-600 text-white px-4 py-3 rounded-t-[12px]">
           <h2 class="text-[18px] font-bold text-center">お問い合わせフォーム</h2>
@@ -76,7 +61,6 @@
 
         <div class="p-4 sm:p-6">
           <form id="contactForm" class="space-y-4" novalidate>
-            <!-- お名前 -->
             <div>
               <label for="name" class="block text-[16px] font-semibold text-gray-800">
                 お名前 <span class="text-gray-500 text-[13px]">(必須)</span>
@@ -86,7 +70,6 @@
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
 
-            <!-- メール -->
             <div>
               <label for="email" class="block text-[16px] font-semibold text-gray-800">
                 メールアドレス <span class="text-gray-500 text-[13px]">(必須)</span>
@@ -96,7 +79,6 @@
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
 
-            <!-- 件名 -->
             <div>
               <label for="subject" class="block text-[16px] font-semibold text-gray-800">
                 件名 <span class="text-gray-500 text-[13px]">(任意)</span>
@@ -106,7 +88,6 @@
                             focus:outline-none focus:ring-2 focus:ring-brandPurple-400 focus:border-brandPurple-500"/>
             </div>
 
-            <!-- 本文 -->
             <div>
               <label for="message" class="block text-[16px] font-semibold text-gray-800">
                 お問い合わせ内容 <span class="text-gray-500 text-[13px]">(必須)</span>
@@ -120,7 +101,6 @@
             <!-- 蜜壺（ボット対策） -->
             <input type="text" id="website" name="website" class="hidden" tabindex="-1" autocomplete="off"/>
 
-            <!-- ボタン -->
             <div class="space-y-2">
               <button id="submitBtn" type="submit"
                       class="w-full select-none rounded-lg bg-gradient-to-r from-blue-500 to-brandPurple-500
@@ -156,17 +136,17 @@
             をご確認ください。
           </p>
 
-          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: tw10e</p>
+          <p id="ver" class="mt-1 text-center text-[12px] text-gray-500">ver: final</p>
         </div>
       </section>
     </div>
   </main>
 
   <script>
-    /* ★ここをあなたの GAS Webアプリ（/exec）URLに置き換え */
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3N1hhGugVls5kjaajW6ksa1XkxFcZwlQ7K8CvJjI0AC1tdKocEwWFjq0jRfJOOag/exec';
+    /* ★ここをあなたの GAS Webアプリ（/exec）URL に置き換え */
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQrttBXcOfWcFjtRsgMgUXyC7JCv3FMB-ETOkaQQUiJSFOyzVDpUS6Chgi8w6mh619/exec';
 
-    // GASへ送信（プリフライトを避ける：no-cors + text/plain）
+    // GASへ送信（プリフライト回避：no-cors + text/plain）
     async function postToGAS(payload){
       await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -191,18 +171,26 @@
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault(); hide(msgOk); hide(msgNg);
-        if (document.getElementById('website').value.trim() !== '') return; // 蜜壺
+
+        // 蜜壺（ボット対策）
+        if (document.getElementById('website').value.trim() !== '') return;
 
         const data = {
-          name: document.getElementById('name').value.trim(),
-          email: document.getElementById('email').value.trim(),
+          name:    document.getElementById('name').value.trim(),
+          email:   document.getElementById('email').value.trim(),
           subject: document.getElementById('subject').value.trim(),
           message: document.getElementById('message').value.trim(),
           pageUrl: location.href,
-          userAgent: navigator.userAgent
+          userAgent: navigator.userAgent,
+          website: '' // サーバ側ハニーポット用フィールド
         };
-        if (!data.name || !data.email || !data.message){ msgNg.textContent='必須項目が未入力です。'; show(msgNg); return; }
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){ msgNg.textContent='メールアドレスの形式が正しくありません。'; show(msgNg); return; }
+
+        if (!data.name || !data.email || !data.message){
+          msgNg.textContent = '必須項目が未入力です。'; show(msgNg); return;
+        }
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){
+          msgNg.textContent = 'メールアドレスの形式が正しくありません。'; show(msgNg); return;
+        }
 
         try{
           busy(true);
