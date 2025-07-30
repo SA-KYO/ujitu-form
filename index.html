@@ -11,14 +11,20 @@
     tailwind.config = {
       theme: {
         extend: {
+          /* brandPurple を“お茶グリーン”に置き換え（既存クラスのまま色相だけ変更） */
           colors: {
-            brandPurple: {50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',800:'#5b21b6',900:'#4c1d95'}
+            brandPurple: {
+              50:'#f3f7f1', 100:'#e8f2e6', 200:'#d6ead4', 300:'#c0dfbd',
+              400:'#9fd39b', 500:'#7ec57d', 600:'#5eab61', 700:'#498a4c',
+              800:'#3b7040', 900:'#325c35'
+            }
           },
           fontFamily: { body: ['"Noto Sans JP"','ui-sans-serif','system-ui','sans-serif'] }
         }
       }
     }
   </script>
+
   <style>
     *,*::before,*::after{ box-sizing: border-box }
     /* iOS の自動ズーム防止 */
@@ -32,19 +38,28 @@
       --maxW: 920px;                                           /* PC上限幅 */
     }
     html, body { margin:0; width:100%; max-width:none; overflow-x:hidden }
+
+    /* ビューポート幅に応じて中央寄せ */
     .edge{ width:min(var(--maxW), calc(100dvw - 2*var(--gap))); margin-left:auto; margin-right:auto; }
     @supports not (width: 100dvw){
       .edge{ width:min(var(--maxW), calc(100vw - 2*var(--gap))); }
     }
+
+    /* 背景：茶畑の淡いグラデーション＋ほんのり紙っぽい明るさ */
+    body{
+      background:
+        linear-gradient(180deg, #f7fbf6 0%, #eef6ee 45%, #e7f2e6 100%);
+      background-attachment: fixed;
+    }
   </style>
 </head>
 
-<body class="min-h-[100dvh] bg-[#98fb98] font-body text-gray-900 antialiased text-[17px] leading-relaxed
+<body class="min-h-[100dvh] font-body text-gray-900 antialiased text-[17px] leading-relaxed
              pt-[var(--padT)] pb-[var(--padB)]">
 
   <!-- ヘッダー（中央） -->
   <header class="edge text-center mb-3">
-    <h1 class="bg-gradient-to-r from-blue-500 to-brandPurple-500 bg-clip-text text-transparent
+    <h1 class="bg-gradient-to-r from-brandPurple-500 to-brandPurple-700 bg-clip-text text-transparent
                text-[26px] font-extrabold tracking-[.2px]">
       お問い合わせ
     </h1>
@@ -53,9 +68,10 @@
 
   <!-- フォームカード（中央寄せ） -->
   <main class="edge">
-    <div class="rounded-xl p-[1px] bg-gradient-to-br from-blue-500/60 to-brandPurple-500/60 shadow-[0_8px_22px_rgba(2,6,23,.14)]">
+    <div class="rounded-xl p-[1px] bg-gradient-to-br from-brandPurple-300 to-brandPurple-600
+                shadow-[0_8px_22px_rgba(34,84,53,.18)]">
       <section class="w-full rounded-[12px] bg-white ring-1 ring-black/10">
-        <div class="bg-brandPurple-600 text-white px-4 py-3 rounded-t-[12px]">
+        <div class="bg-brandPurple-700 text-white px-4 py-3 rounded-t-[12px]">
           <h2 class="text-[18px] font-bold text-center">お問い合わせフォーム</h2>
         </div>
 
@@ -103,7 +119,7 @@
 
             <div class="space-y-2">
               <button id="submitBtn" type="submit"
-                      class="w-full select-none rounded-lg bg-gradient-to-r from-blue-500 to-brandPurple-500
+                      class="w-full select-none rounded-lg bg-gradient-to-r from-brandPurple-500 to-brandPurple-700
                              px-4 py-3.5 text-[17px] font-extrabold text-white shadow-md
                              transition active:scale-[.98] disabled:opacity-60">
                 <span class="inline-flex items-center justify-center gap-2">
